@@ -1,0 +1,25 @@
+﻿@model Mentorship.Models.SecondaryFunctions.CourseListModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<form method="post">
+    <input type="submit" asp-action="Index" asp-controller="AddNewCourse">
+</form>
+
+@foreach (var u in Model.Courses)
+{
+    string path = u.LessonTitle + ".png";
+    <center>
+        <b>
+            <a class="nav-link text-dark" href="https://localhost:44373/Course/CoursePage?lessonTitle=@u.LessonTitle">
+            @u.LessonTitle (@u.LessonTags)
+            </a>
+         
+        </b>
+        <p />
+        <img src="~/courses/@path" style="width:auto;height:300px;" />
+        <hr/>
+    </center>
+}

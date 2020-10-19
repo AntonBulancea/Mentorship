@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>AddNew</h1>
+
+<form method="post" enctype="multipart/form-data" asp-action="LessonAdded" asp-controller="AddNewCourse">
+    <label>Title:</label>
+    <p />
+    <input type="text" name="title" />
+
+    <label>Desctiption:</label>
+    <p />
+    <textarea name="desc"> </textarea>
+
+    <label>Upload img:</label>
+    <p />
+    <input type="file" name="file"/>
+
+    <label>Tags:</label>
+    <p />
+    <input type="text" name="tags" />
+
+    <p />
+    <input type="submit" value="ready" />
+</form>
