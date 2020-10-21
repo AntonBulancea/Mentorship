@@ -18,16 +18,18 @@ namespace Mentorship.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult LessonAdded(IFormFile file,string title,string desc,string tags)
+        public IActionResult LessonAdded(IFormFile file, string title, string desc, string tags)
         {
             string path = "wwwroot/courses/" + title + ".png";
-            using (FileStream stream = new FileStream(path,FileMode.OpenOrCreate))
+            using (FileStream stream = new FileStream(path, FileMode.OpenOrCreate))
             {
                 file.CopyTo(stream);
             }
 
-            using (CoursesContext context = new CoursesContext()) {
-                Courses course = new Courses() {
+            using (CoursesContext context = new CoursesContext())
+            {
+                Courses course = new Courses()
+                {
                     LessonTitle = title,
                     LessonDescription = desc,
                     LessonPhoto = null,
@@ -36,7 +38,7 @@ namespace Mentorship.Controllers
                 context.courses.Add(course);
                 context.SaveChanges();
             }
-                return View("Index");
+            return View("Index");
         }
     }
 }

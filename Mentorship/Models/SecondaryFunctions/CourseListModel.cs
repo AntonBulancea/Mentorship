@@ -9,5 +9,6 @@ namespace Mentorship.Models.SecondaryFunctions
     public class CourseListModel
     {
        public List<Courses> Courses { get; set; }
+    public string Tags { get; set; }
     }
 }

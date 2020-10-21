@@ -18,10 +18,28 @@ namespace Mentorship.Controllers
                     context.courses.Remove(u);
                 }
                 context.SaveChanges();
-           
+            }
+
+            using (NewsContext context = new NewsContext())
+            {
+                foreach (var u in context.news)
+                {
+                    context.news.Remove(u);
+                }
+                context.SaveChanges();
+            }
+
+            using (AttachedFilesContext context = new AttachedFilesContext())
+            {
+                foreach (var u in context.files)
+                {
+                    context.files.Remove(u);
+                }
+                context.SaveChanges();
+            }
 
             return Content("0");
-            }
+
         }
     }
 }

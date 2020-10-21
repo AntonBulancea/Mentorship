@@ -3,7 +3,56 @@
 @{
     ViewData["Title"] = "CoursePage";
 }
+<center>
+    <h1>@Model.lessonTitle</h1>
 
-<h1>CoursePage</h1>
+    <p />
+    @{
+        string path = Model.lessonTitle + ".png";
 
-@Model.lessonTitle
+        <img src="~/courses/@path" style="width:auto;height:300px;">
+    }
+    <p />
+
+    <hr>
+    @Model.description
+    <hr>
+    <center>
+        <form method="post" enctype="multipart/form-data">
+            <label>News Title:</label>
+            <p />
+            <input type="text" name="NewsTitle" />
+            <p />
+            <label>News Text:</label>
+            <p />
+            <textarea name="NewsText"> </textarea>
+            <p />
+            <input type="file" multiple name="file" />
+            <p />
+            <input type="submit" asp-action="AddNews" asp-controller="Course" name="lessonTitle" class="button greenButton" value="Add news in @Model.lessonTitle">
+        </form>
+    </center>
+</center>
+
+
+<hr>
+@foreach (var u in Model.news)
+{
+    <center>
+        <b>@u.NewsTitle</b>
+        <p />
+        @u.NewsText
+    </center>
+
+    @foreach (var f in Model.at)
+    {
+        if (f.NewsTitle.Equals(u.NewsTitle))
+        {
+            <a class="nav-link a-gray" href="
+               https://localhost:44373/Course/DownloadFile?LessonTitle=@f.LessonTitle&Filename=@f.FileName&NewsTitle=@f.NewsTitle">
+                @f.FileName
+            </a>
+        }
+    }
+    <hr>
+}

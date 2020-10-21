@@ -4,22 +4,35 @@
 }
 
 <h1>Index</h1>
-<form method="post">
-    <input type="submit" asp-action="Index" asp-controller="AddNewCourse">
+<form method="post" asp-action="Tags" asp-controller="CoursesListIndex">
+    <input type="text" value="@Model.Tags" name="temp">
+    <input type="submit" class="greenButton" value="Set template">
 </form>
 
+<form method="post" asp-action="Index" asp-controller="AddNewCourse">
+    <input type="submit" class="button button2" value="Add new Course">
+</form>
+@{
+string tag = Model.Tags;
 @foreach (var u in Model.Courses)
 {
-    string path = u.LessonTitle + ".png";
-    <center>
-        <b>
-            <a class="nav-link text-dark" href="https://localhost:44373/Course/CoursePage?lessonTitle=@u.LessonTitle">
-            @u.LessonTitle (@u.LessonTags)
-            </a>
-         
-        </b>
-        <p />
-        <img src="~/courses/@path" style="width:auto;height:300px;" />
-        <hr/>
-    </center>
+    @if (Model.Tags != null && u.LessonTags != null)
+    {
+        @if (u.LessonTags.Contains(tag.Substring(1)) || tag.Equals("No template"))
+        {
+            string path = u.LessonTitle + ".png";
+            <center>
+                <b>
+                    <a class="nav-link text-dark" href="https://localhost:44373/Course/CoursePage?lessonTitle=@u.LessonTitle">
+                        @u.LessonTitle (@u.LessonTags)
+                    </a>
+
+                </b>
+                <p />
+                <img src="~/courses/@path" style="width:auto;height:300px;" />
+                <hr />
+            </center>
+        }
+    }
+}
 }

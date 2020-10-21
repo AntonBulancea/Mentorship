@@ -23,9 +23,26 @@ namespace Mentorship.Controllers
                 }
             }
 
-            CourseListModel model = new CourseListModel() { Courses = courses };
+            CourseListModel model = new CourseListModel() { Courses = courses, Tags = "No template" };
 
             return View(model);
+        }
+        [HttpPost]
+        public IActionResult Tags(string temp)
+        {
+            List<Courses> courses = new List<Courses>();
+            using (CoursesContext db = new CoursesContext())
+            {
+                var cr = db.courses;
+                foreach (var u in cr)
+                {
+                    courses.Add(u);
+                }
+            }
+
+            CourseListModel model = new CourseListModel() { Courses = courses, Tags = temp };
+
+            return View("Index", model);
         }
     }
 }
