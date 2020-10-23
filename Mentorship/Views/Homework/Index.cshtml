@@ -1,0 +1,75 @@
+﻿@model Mentorship.Models.SecondaryFunctions.HomeworkModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Hometasks</h1>
+
+@Model.lessonTitle
+
+@if (true)
+{
+    <form method="post" asp-action="AddHometask" asp-controller="Homework">
+        <label>Homework Theme:</label>
+        <p />
+        <textarea name="theme"> </textarea>
+        <p />
+        <label>Add comment:</label>
+        <p />
+        <input type="text" name="newsLink" />
+        <p />
+        <label>Pupils who have to do it:</label>
+        <p />
+        <input type="text" name="emails" value="All" />
+        <p />
+        <input type="submit" name="lessonTitle" value="Add Hometask to @Model.lessonTitle" class="button greenButton" />
+    </form>
+}
+
+@foreach (var u in Model.htTheme)
+{
+    string lt = u.Hometask.Substring(4);
+
+    if (lt.Equals(Model.lessonTitle))
+    {
+    <center>
+        <h1>
+            @u.Date
+        </h1>
+        <b> @u.Theme </b>
+    </center>
+        if (!u.Pupils.Equals("All"))
+        {
+            foreach (var f in u.Pupils.Split(' '))
+            {
+            <p />
+            @f
+
+            }
+        }
+        else
+        {
+        <b>Everyone have to do it</b>
+        }
+    <hr>
+    @foreach (var f in Model.htFiles)
+    {
+        int a = Int32.Parse(f.HometaskId.Split('|')[0]);
+
+        <a href="https://localhost:44373/Homework/DownloadHt?id=@a&filename=@f.HometaskId.Split('|')[1]">
+            @f.HometaskId.Split('|')[1]
+        </a>
+        <p />
+
+    }
+    <hr>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" multiple name="files">
+
+        <input type="submit" value="Add HT in @u.Id" name="id" class="button greenButton"
+               asp-action="HometaskAdded" asp-controller="Homework" />
+    </form>
+    <hr>
+    <p />
+    }
+}

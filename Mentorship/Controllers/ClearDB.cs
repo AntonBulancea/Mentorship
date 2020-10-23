@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Mentorship.Models.Context;
+using Mentorship.Models.Tables;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mentorship.Controllers
@@ -11,6 +12,7 @@ namespace Mentorship.Controllers
     {
         public IActionResult Index()
         {
+            /*
             using (CoursesContext context = new CoursesContext())
             {
                 foreach (var u in context.courses)
@@ -19,7 +21,7 @@ namespace Mentorship.Controllers
                 }
                 context.SaveChanges();
             }
-
+*/
             using (NewsContext context = new NewsContext())
             {
                 foreach (var u in context.news)
@@ -34,6 +36,24 @@ namespace Mentorship.Controllers
                 foreach (var u in context.files)
                 {
                     context.files.Remove(u);
+                }
+                context.SaveChanges();
+            }
+            
+            using (HometaskContext context = new HometaskContext())
+            {
+                foreach (var u in context.ht)
+                {
+                    context.ht.Remove(u);
+                }
+                context.SaveChanges();
+            }
+
+            using (HtFilesContext context = new HtFilesContext())
+            {
+                foreach (var u in context.htFiles)
+                {
+                    context.htFiles.Remove(u);
                 }
                 context.SaveChanges();
             }
