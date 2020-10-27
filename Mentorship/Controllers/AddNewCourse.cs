@@ -8,6 +8,10 @@ using Mentorship.Models.Tables;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+using MimeKit;
+using MailKit.Net.Smtp;
+using System.Threading.Tasks;
+
 namespace Mentorship.Controllers
 {
     public class AddNewCourse : Controller
@@ -18,7 +22,7 @@ namespace Mentorship.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult LessonAdded(IFormFile file, string title, string desc, string tags, string emails)
+        public IActionResult LessonAddedAsync(IFormFile file, string title, string desc, string tags, string emails)
         {
             string path = "wwwroot/courses/" + title + ".png";
             using (FileStream stream = new FileStream(path, FileMode.OpenOrCreate))

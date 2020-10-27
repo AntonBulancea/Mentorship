@@ -1,0 +1,69 @@
+﻿@model Mentorship.Models.SecondaryFunctions.ManageModel
+@{
+    ViewData["Title"] = "CoursesManage";
+}
+
+<h1>Your Courses</h1>
+@{
+    int i = 1;
+    @foreach (var u in Model.courses)
+    {
+        string a = i.ToString() + ". ";
+
+        <b>
+            <a href="/Course/CoursePage?lessonTitle=@u.LessonTitle"
+               class="underline-animation courses-link">
+                @a @u.LessonTitle
+            </a>
+        </b>
+
+        <p />
+        a = "Pupils - " + u.PupilsEmails;
+        @a
+
+        <p> </p>
+
+        a = "Tags - " + u.LessonTags;
+        @a
+        <hr>
+        <p />
+        i++;
+    }
+
+    if (i == 1)
+    {
+        <b>You haven't made any couse yet :(</b>
+    }
+}
+
+<h1>Courses you are in</h1>
+@{
+    i = 1;
+    @foreach (var u in Model.Learn_courses)
+    {
+        string a = i.ToString() + ". ";
+
+        <b>
+            <a href="/Course/CoursePage?lessonTitle=@u.LessonTitle"
+               class="underline-animation courses-link">
+                @a @u.LessonTitle
+            </a>
+        </b>
+
+        <p />
+        a = "Pupils - " + u.PupilsEmails;
+        @a
+
+        <p> </p>
+
+        a = "Tags - " + u.LessonTags;
+        @a
+        <hr>
+        <p />
+        i++;
+    }
+    if (i == 1)
+    {
+        <b>You haven't got in any couse yet :(</b>
+    }
+}

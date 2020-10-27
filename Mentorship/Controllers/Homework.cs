@@ -36,7 +36,7 @@ namespace Mentorship.Controllers
                 context.SaveChanges();
             }
 
-            return View("Index", setModel(lessonTitle));
+            return View("Index", setModel(lessonTitle.Substring(3)));
         }
         [HttpPost]
         public IActionResult HometaskAdded(string id, IFormFileCollection files)
