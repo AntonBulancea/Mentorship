@@ -68,13 +68,13 @@ namespace Mentorship.Controllers
                     }
 
                     string date = DateTime.Now.ToString("dddd, dd MMMM yyyy");
-                    HometaskFiles at = new HometaskFiles() { HometaskId = id + "|" + u.FileName, Date = date, File = buffer,};
+                    HometaskFiles at = new HometaskFiles() { HometaskId = id + "|" + u.FileName, Date = date, File = buffer};
                     context.htFiles.Add(at);
                     context.SaveChanges();
                 }
             }
 
-            return View("Index", setModel(lessonTitle));
+            return View("Index", setModel(lessonTitle.Substring(3)));
         }
         public IActionResult DownloadHt(string id,string filename) {
             string lessonTitle = " ";

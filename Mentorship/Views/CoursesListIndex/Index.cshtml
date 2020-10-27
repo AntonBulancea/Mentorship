@@ -5,7 +5,7 @@
 
 <h1>Index</h1>
 <form method="post" asp-action="Tags" asp-controller="CoursesListIndex">
-    <input type="text" value="@Model.Tags" name="temp">
+    <input type="text" class="all-text-box" value="@Model.Tags" name="temp">
     <input type="submit" class="greenButton" value="Set template">
 </form>
 
@@ -13,26 +13,29 @@
     <input type="submit" class="button button2" value="Add new Course">
 </form>
 @{
-string tag = Model.Tags;
-@foreach (var u in Model.Courses)
-{
-    @if (Model.Tags != null && u.LessonTags != null)
+    string tag = Model.Tags;
+    @foreach (var u in Model.Courses)
     {
-        @if (u.LessonTags.Contains(tag.Substring(1)) || tag.Equals("No template"))
+        @if (Model.Tags != null && u.LessonTags != null)
         {
-            string path = u.LessonTitle + ".png";
-            <center>
-                <b>
-                    <a class="nav-link text-dark" href="https://localhost:44373/Course/CoursePage?lessonTitle=@u.LessonTitle">
-                        @u.LessonTitle (@u.LessonTags)
-                    </a>
+            @if (u.LessonTags.Contains(tag.Substring(1)) || tag.Equals("No template"))
+            {
+                string path = u.LessonTitle + ".png";
+                <center>
+                    <b>
+                        <a class="underline-animation courses-link" href="https://localhost:44373/Course/CoursePage?lessonTitle=@u.LessonTitle">
+                            @u.LessonTitle (@u.LessonTags)
+                        </a>
 
-                </b>
-                <p />
-                <img src="~/courses/@path" style="width:auto;height:300px;" />
-                <hr />
-            </center>
+
+                    </b>
+
+                    <div class="white-box"> </div>
+
+                    <img src="~/courses/@path" style="width:auto;height:300px;" />
+                    <hr />
+                </center>
+            }
         }
     }
-}
 }

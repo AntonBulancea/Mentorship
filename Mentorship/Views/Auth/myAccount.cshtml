@@ -1,0 +1,52 @@
+﻿@model Mentorship.Models.MainFunctions.Accounts
+@{
+    ViewData["Title"] = "myAccount";
+}
+
+<h1>Hello,@Model.Name @Model.Surname</h1>
+<b>@Model.Email</b>
+
+<style>
+    .mySidenav-acc a {
+        position: absolute;
+        left: -80px;
+        top: 10%;
+        transition: 0.3s;
+        padding: 15px;
+        width: 100px;
+        text-decoration: none;
+        font-size: 20px;
+        color: white;
+        border-radius: 0 5px 5px 0;
+    }
+
+        .mySidenav-acc a:hover {
+            left: 0;
+        }
+
+    #about {
+        top: 20px;
+        background-color: #4CAF50;
+    }
+
+    #blog {
+        top: 80px;
+        background-color: #2196F3;
+    }
+
+    #projects {
+        top: 140px;
+        background-color: #f44336;
+    }
+
+    #contact {
+        top: 200px;
+        background-color: #555
+    }
+</style>
+    <div class="mySidenav-acc">
+        <a href="#" style="top:190px" id="acc">Account</a>
+        <a href="#" style="top:280px" id="lear">Learn</a>
+        <a href="#" style="top:370px" id="teac">Teach</a>
+        <a href="#" style="top:460px" id="set">Settings</a>
+    </div>

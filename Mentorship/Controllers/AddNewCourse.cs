@@ -18,12 +18,19 @@ namespace Mentorship.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult LessonAdded(IFormFile file, string title, string desc, string tags)
+        public IActionResult LessonAdded(IFormFile file, string title, string desc, string tags, string emails)
         {
             string path = "wwwroot/courses/" + title + ".png";
             using (FileStream stream = new FileStream(path, FileMode.OpenOrCreate))
             {
                 file.CopyTo(stream);
+            }
+
+            string email;
+
+            using (StreamReader reader = new StreamReader("wwwroot/Account.txt"))
+            {
+                email = reader.ReadToEnd().Split('&')[2];
             }
 
             using (CoursesContext context = new CoursesContext())
@@ -33,7 +40,8 @@ namespace Mentorship.Controllers
                     LessonTitle = title,
                     LessonDescription = desc,
                     LessonPhoto = null,
-                    LessonTags = tags
+                    LessonTags = tags,
+                    PupilsEmails = email + " " + emails
                 };
                 context.courses.Add(course);
                 context.SaveChanges();

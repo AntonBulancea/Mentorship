@@ -15,13 +15,34 @@ namespace Mentorship.Controllers
     {
         public IActionResult CoursePage(string lessonTitle)
         {
+            string email;
+
+            using (StreamReader reader = new StreamReader("wwwroot/Account.txt"))
+            {
+                email = reader.ReadToEnd().Split('&')[2];
+            }
+
+            using (CoursesContext context = new CoursesContext())
+            {
+                var db = context.courses;
+                foreach (var u in db)
+                {
+                    if (u.LessonTitle.Equals(lessonTitle))
+                    {
+                        if (!u.PupilsEmails.Split(' ').Contains(email))
+                        {
+                            return View("WrongEmail");
+                        }
+                    }
+                }
+            }
             return View("CoursePage", SetModel(lessonTitle));
         }
         [HttpPost]
         public IActionResult AddNews(IFormFileCollection file, string lessonTitle, string NewsText, string NewsTitle)
         {
             lessonTitle = lessonTitle.Substring(12);
-  
+
             foreach (var u in file)
             {
                 using (AttachedFilesContext context = new AttachedFilesContext())
@@ -49,7 +70,7 @@ namespace Mentorship.Controllers
         }
         public IActionResult DownloadFile(string LessonTitle, string FileName, string NewsTitle)
         {
-            
+
             using (AttachedFilesContext context = new AttachedFilesContext())
             {
                 var db = context.files;
@@ -64,8 +85,8 @@ namespace Mentorship.Controllers
                     }
                 }
             }
-            
-            return View("CoursePage",SetModel(LessonTitle));
+
+            return View("CoursePage", SetModel(LessonTitle));
         }
         public CoursePageModel SetModel(string lessonTitle)
         {

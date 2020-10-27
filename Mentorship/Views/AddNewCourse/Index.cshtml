@@ -7,7 +7,7 @@
 <form method="post" enctype="multipart/form-data" asp-action="LessonAdded" asp-controller="AddNewCourse">
     <label>Title:</label>
     <p />
-    <input type="text" name="title" />
+    <input type="text" class="all-text-box" name="title" />
     <p />
     <label>Desctiption:</label>
     <p />
@@ -21,8 +21,12 @@
     <p />
     <label>Tags:</label>
     <p />
-    <input type="text" name="tags" />
-
+    <input type="text" class="all-text-box" name="tags" />
+    <p/>
+    <label>Pupil emails:</label>
     <p />
-    <input type="submit" value="Add new lesson"  class="button button2"/>
+    <input type="text" class="all-text-box" name="emails" />
+    
+    <p />
+    <input type="submit" value="Add new lesson" class="button button2" />
 </form>

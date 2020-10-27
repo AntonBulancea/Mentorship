@@ -1,0 +1,216 @@
+﻿@model Mentorship.Models.SecondaryFunctions.AuthModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Login</h1>
+<style>
+    .vl {
+        border-left: 1.5px solid gray;
+        height: 570px;
+        position: absolute;
+        left: 50%;
+        margin-left: -3px;
+        top: 80px;
+    }
+
+    .right {
+        left: 60%;
+        position: absolute;
+        top: 50px;
+    }
+</style>
+
+<style>
+    h2 {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+        h2 small {
+            font-weight: normal;
+            color: #888;
+            display: block;
+        }
+
+    .footer {
+        text-align: center;
+    }
+
+        .footer a {
+            color: #53B2C8;
+        }
+
+    .group {
+        position: relative;
+        margin-bottom: 45px;
+    }
+
+    input {
+        font-size: 18px;
+        padding: 10px 10px 10px 5px;
+        display: block;
+        width: 300px;
+        border: none;
+        border-bottom: 1px solid #757575;
+    }
+
+        input:focus {
+            outline: none;
+        }
+
+    label {
+        color: #999;
+        font-size: 18px;
+        font-weight: normal;
+        position: absolute;
+        pointer-events: none;
+        left: 5px;
+        top: 10px;
+        transition: 0.2s ease all;
+        -moz-transition: 0.2s ease all;
+        -webkit-transition: 0.2s ease all;
+    }
+
+    input:focus ~ label, input:valid ~ label {
+        top: -20px;
+        font-size: 14px;
+        color: #5264AE;
+    }
+
+    .bar {
+        position: relative;
+        display: block;
+        width: 300px;
+    }
+
+        .bar:before, .bar:after {
+            content: '';
+            height: 2px;
+            width: 0;
+            bottom: 1px;
+            position: absolute;
+            background: #5264AE;
+            transition: 0.2s ease all;
+            -moz-transition: 0.2s ease all;
+            -webkit-transition: 0.2s ease all;
+        }
+
+        .bar:before {
+            left: 50%;
+        }
+
+        .bar:after {
+            right: 50%;
+        }
+
+    input:focus ~ .bar:before, input:focus ~ .bar:after {
+        width: 50%;
+    }
+
+    .highlight {
+        position: absolute;
+        height: 60%;
+        width: 100px;
+        top: 25%;
+        left: 0;
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
+    /* active state */
+    input:focus ~ .highlight {
+        -webkit-animation: inputHighlighter 0.3s ease;
+        -moz-animation: inputHighlighter 0.3s ease;
+        animation: inputHighlighter 0.3s ease;
+    }
+</style>
+
+<div class="vl"></div>
+<div>
+    <form method="post">
+        <p />
+        <div class="group">
+            <input type="text" name="email" required>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>Email</label>
+        </div>
+
+        <div class="group">
+            <input type="text" name="pass" required>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>Password</label>
+        </div>
+
+        <div class="text-box">
+            <input asp-action="logIn" asp-controller="Auth" class="btn btn-white btn-animate"
+                   type="submit" value="LOG IN" style="width:300px; border-radius:100px" />
+        </div>
+    </form>
+    @if (Model != null)
+    {
+        @if (Model.Danger != null && !Model.Danger.Equals(""))
+        {
+            <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+            <div class="w3-panel w3-pale-red w3-border" style="width:45%">
+                <h3>Danger!</h3>
+                <p>@Model.Danger</p>
+            </div>
+        }
+    }
+</div>
+
+<div class="right" style="top:89px">
+    <h1>Register</h1>
+    <form method="post">
+        <p />
+        <div class="group">
+            <input type="text" name="name" required>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>Name</label>
+        </div>
+
+        <div class="group">
+            <input type="text" name="surname" required>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>Surname</label>
+        </div>
+
+        <div class="group">
+            <input type="text" name="email" required>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>Email</label>
+        </div>
+
+        <div class="group">
+            <input type="text" name="pass" required>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>Password</label>
+        </div>
+
+        <div class="text-box">
+            <input asp-action="regIn" asp-controller="Auth" class="btn btn-white btn-animate"
+                   type="submit" value="REG IN" style="width:100%; border-radius:100px" />
+        </div>
+
+        @if (Model != null)
+        {
+            @if (Model.RegDanger != null && !Model.RegDanger.Equals(""))
+            {
+                <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+                <div class="w3-panel w3-pale-red w3-border" style="width:100%">
+                    <h3>Danger!</h3>
+                    <p>@Model.RegDanger</p>
+                </div>
+            }
+        }
+    </form>
+</div>
