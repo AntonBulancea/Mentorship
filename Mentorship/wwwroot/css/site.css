@@ -149,7 +149,7 @@ textarea, select {
     }
 
 .greenButton {
-    background-color: #4CAF50;
+    background-color: darkgreen;
     border: none;
     color: white;
     padding: 16px 32px;
@@ -164,7 +164,7 @@ textarea, select {
 }
 
     .greenButton:hover {
-        background-color: darkgreen;
+        background-color: #4CAF50;
         color: white;
     }
 
@@ -232,10 +232,6 @@ a {
 .white-box {
     background-color: none;
     height: 3px;
-}
-
-body {
-    font-family: "Lato", sans-serif;
 }
 
 .sidenav {
@@ -378,4 +374,14 @@ body {
         opacity: 1;
         transform: translateY(0px);
     }
+}
+
+.div {
+    border: 1.5px solid rgba(0, 0, 0, 0.2);
+    border-radius: 2.5px;
+}
+
+.div-no {
+    background-color: none;
+    height: 30px;
 }

@@ -61,7 +61,22 @@ namespace Mentorship.Controllers
                 }
                 context.SaveChanges();
             }
-
+            using (SectionLessonContext context = new SectionLessonContext())
+            {
+                foreach (var u in context.sLessons)
+                {
+                    context.sLessons.Remove(u);
+                }
+                context.SaveChanges();
+            }
+            using (SectionsContext context = new SectionsContext())
+            {
+                foreach (var u in context.sections)
+                {
+                    context.sections.Remove(u);
+                }
+                context.SaveChanges();
+            }
             return Content("0");
 
         }

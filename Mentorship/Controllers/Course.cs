@@ -15,12 +15,7 @@ namespace Mentorship.Controllers
     {
         public IActionResult CoursePage(string lessonTitle)
         {
-            string email;
-
-            using (StreamReader reader = new StreamReader("wwwroot/Account.txt"))
-            {
-                email = reader.ReadToEnd().Split('&')[2];
-            }
+            string email = HttpContext.Request.Cookies["email"];
 
             using (CoursesContext context = new CoursesContext())
             {
@@ -70,13 +65,14 @@ namespace Mentorship.Controllers
         }
         public IActionResult DownloadFile(string LessonTitle, string FileName, string NewsTitle)
         {
-
+            FileName = FileName.Substring("                   ".Length);
             using (AttachedFilesContext context = new AttachedFilesContext())
             {
                 var db = context.files;
                 foreach (var u in db)
                 {
-                    if (u.FileName.Equals(FileName) && u.NewsTitle.Equals(NewsTitle) && u.LessonTitle.Equals(LessonTitle))
+                    if (u.FileName.Equals(FileName)
+                        && u.NewsTitle.Equals(NewsTitle) && u.LessonTitle.Equals(LessonTitle))
                     {
                         using (FileStream stream = new FileStream(@"wwwroot\download\" + FileName, FileMode.Create))
                         {

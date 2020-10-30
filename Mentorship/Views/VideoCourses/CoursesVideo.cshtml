@@ -1,0 +1,316 @@
+﻿@model Mentorship.Models.SecondaryFunctions.CoursesVideoModel
+
+@{
+    ViewData["Title"] = "CoursesVideo";
+}
+
+<h1>Courses Video</h1>
+
+<div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: "Lato", sans-serif;
+        }
+
+        .tab {
+            float: left;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            width: 30%;
+            height: 300px;
+        }
+
+            .tab button {
+                display: block;
+                background-color: inherit;
+                color: black;
+                padding: 22px 16px;
+                width: 100%;
+                border: none;
+                outline: none;
+                text-align: left;
+                cursor: pointer;
+                transition: 0.3s;
+                font-size: 17px;
+            }
+
+                .tab button:hover {
+                    background-color: #ddd;
+                }
+
+                .tab button.active {
+                    background-color: #ccc;
+                }
+
+        .tabcontent {
+            float: left;
+            padding: 0px 12px;
+            border: 1px solid #ccc;
+            width: 70%;
+            border-left: none;
+            height: 300px;
+        }
+    </style>
+    <style>
+        h2 {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+            h2 small {
+                font-weight: normal;
+                color: #888;
+                display: block;
+            }
+
+        .footer {
+            text-align: center;
+        }
+
+            .footer a {
+                color: #53B2C8;
+            }
+
+        .group {
+            position: relative;
+            margin-bottom: 45px;
+        }
+
+        input {
+            font-size: 18px;
+            padding: 10px 10px 10px 5px;
+            display: block;
+            width: 300px;
+            border: none;
+            border-bottom: 1px solid #757575;
+        }
+
+            input:focus {
+                outline: none;
+            }
+
+        label {
+            color: #999;
+            font-size: 18px;
+            font-weight: normal;
+            position: absolute;
+            pointer-events: none;
+            left: 5px;
+            top: 10px;
+            transition: 0.2s ease all;
+            -moz-transition: 0.2s ease all;
+            -webkit-transition: 0.2s ease all;
+        }
+
+        input:focus ~ label, input:valid ~ label {
+            top: -20px;
+            font-size: 14px;
+            color: #5264AE;
+        }
+
+        .bar {
+            position: relative;
+            display: block;
+            width: 300px;
+        }
+
+            .bar:before, .bar:after {
+                content: '';
+                height: 2px;
+                width: 0;
+                bottom: 1px;
+                position: absolute;
+                background: #5264AE;
+                transition: 0.2s ease all;
+                -moz-transition: 0.2s ease all;
+                -webkit-transition: 0.2s ease all;
+            }
+
+            .bar:before {
+                left: 50%;
+            }
+
+            .bar:after {
+                right: 50%;
+            }
+
+        input:focus ~ .bar:before, input:focus ~ .bar:after {
+            width: 50%;
+        }
+
+        .highlight {
+            position: absolute;
+            height: 60%;
+            width: 100px;
+            top: 25%;
+            left: 0;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        /* active state */
+        input:focus ~ .highlight {
+            -webkit-animation: inputHighlighter 0.3s ease;
+            -moz-animation: inputHighlighter 0.3s ease;
+            animation: inputHighlighter 0.3s ease;
+        }
+    </style>
+    <style>
+        body {
+            font-family: Arial;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        form.example input[type=text] {
+            padding: 10px;
+            font-size: 17px;
+            border: 1px solid grey;
+            float: left;
+            width: 80%;
+            background: #f1f1f1;
+        }
+
+        form.example button {
+            float: left;
+            width: 20%;
+            padding: 10px;
+            background: #2196F3;
+            color: white;
+            font-size: 17px;
+            border: 1px solid grey;
+            border-left: none;
+            cursor: pointer;
+        }
+
+            form.example button:hover {
+                background: #0b7dda;
+            }
+
+        form.example::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+    </style>
+
+    <center>
+        <form class="example" method="post"
+              style="margin:auto;max-width:300px">
+
+            <input type="text" placeholder="Add new section.." name="section">
+            <input type="submit" value="Add section in @Model.lessonTitle" name="lessonTitle"
+                   asp-action="AddNewSection" asp-controller="VideoCourses" class="greenButton"/>
+        </form>
+    </center>
+
+    <div style="background-color:none; height:20px"> </div>
+
+    <center>
+        <div>
+            <div class="tab" style="overflow:auto">
+                <button class="tablinks" onclick="openCity(event, 'Beginning')" id="defaultOpen">Beginning</button>
+
+                @if (Model != null && Model.sections != null)
+                {
+                    @foreach (var u in Model.sections)
+                    {
+                        <button class="tablinks" onclick="openCity(event, '@u.SectionTitle')">
+                            @u.SectionTitle
+                        </button>
+                    }
+                }
+            </div>
+
+            <div id="Beginning" style="overflow:auto" class="tabcontent">
+                <h3>Beginning</h3>
+
+                <form method="post" asp-action="" asp-controller="">
+                    <div class="group">
+                        <input type="text" name="video" required>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                    </div>
+
+                    <textarea name="description"> </textarea>
+                    <p />
+                    <input type="submit" value="Save changes" class="greenButton" />
+                </form>
+            </div>
+
+            @if (Model != null && Model.lessons != null)
+            {
+                int i = 0
+                    ;
+                @foreach (var u in Model.sections)
+                {
+                    <div id="@u.SectionTitle" style="overflow:auto" class="tabcontent">
+                        <h3>@u.SectionTitle</h3>
+
+                        @if (false)
+                        {
+                            <form method="post" asp-action="ChangeLesson" asp-controller="VideoCourses">
+                                <div class="group">
+                                    <input type="text" name="video" required>
+                                    <span class="highlight"></span>
+                                    <span class="bar"></span>
+                                </div>
+
+                                <textarea name="desc"> </textarea>
+                                <p />
+                                <input type="submit" name="lessonTitle"
+                                       value="Save changes in @u.LessonTitle,@u.SectionTitle" class="greenButton" />
+                            </form>
+                        }
+                        else
+                        {
+                            if (i < Model.lessons.Count)
+                            {
+                                int j = 0;
+                                foreach (var f in Model.lessons)
+                                {
+
+                                    if (Model.lessons[i].lessonTitle.Equals(Model.lessonTitle) &&
+                                    Model.lessons[i].sectionTitle.Equals(u.SectionTitle) && j == 0)
+                                    {
+                                        string src = "https://www.youtube.com/embed/" + Model.lessons[i].videoLink;
+                                        <iframe width="420" allowfullscreen="allowfullscreen" height="345" src="@src"></iframe>
+                                        <hr>
+                                        @Model.lessons[i].description
+                                        break;
+                                    }
+                                    j++;
+                                }
+                            }
+                        }
+
+                        @{i++;}
+                    </div>
+                }
+            }
+    </center>
+</div>
+<script>
+    function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+    document.getElementById("defaultOpen").click();
+</script>
+</div>

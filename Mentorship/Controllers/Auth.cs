@@ -31,10 +31,12 @@ namespace Mentorship.Controllers
                     if (u.Email.Equals(email) && u.Password.Equals(pass))
                     {
                         Accounts account = new Accounts() { Name = u.Name, Surname = u.Surname, Email = email, Pass = pass };
-                        using (StreamWriter writer = new StreamWriter("wwwroot/Account.txt"))
-                        {
-                            writer.Write(u.Name + "&" + u.Surname + "&" + email + "&" + pass);
-                        }
+                      
+                        Response.Cookies.Append("name", u.Name);
+                        Response.Cookies.Append("surname", u.Surname);
+                        Response.Cookies.Append("email", email);
+                        Response.Cookies.Append("pass", pass);
+
                         return View("myAccount", account);
                     }
                 }
@@ -47,8 +49,6 @@ namespace Mentorship.Controllers
             {
                 RegDanger = "User " + email + " currently exists",
             };
-
-
 
             using (AccountContext context = new AccountContext())
             {
@@ -69,11 +69,20 @@ namespace Mentorship.Controllers
                 context.SaveChanges();
             }
 
-            using (StreamWriter writer = new StreamWriter("wwwroot/Account.txt"))
+            Response.Cookies.Append("name", name);
+            Response.Cookies.Append("surname", surname);
+            Response.Cookies.Append("email", email);
+            Response.Cookies.Append("pass", pass);
+
+            Accounts account = new Accounts()
             {
-                writer.Write(name + "&" + surname + "&" + email + "&" + pass);
-            }
-            Accounts account = new Accounts() { Name = name, Surname = surname, Email = email, Pass = pass };
+                Name = name,
+                Surname = surname,
+                Email = email,
+                Pass = pass
+            };
+
+            // return Content(HttpContext.Request.Cookies["email"]);
             return View("myAccount", account);
         }
         public IActionResult myAccountPage()

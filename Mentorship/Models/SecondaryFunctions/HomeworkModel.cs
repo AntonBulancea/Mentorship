@@ -10,6 +10,7 @@ namespace Mentorship.Models.SecondaryFunctions
     public class HomeworkModel
     {
         public string lessonTitle { get; set; }
+        public string email { get; set; }
 
         public List<HometaskFiles> htFiles { get; set; }
         public List<HomeworkTheme> htTheme { get; set; }

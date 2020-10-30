@@ -17,13 +17,7 @@ namespace Mentorship.Controllers
             List<Courses> cs = new List<Courses>();
             List<Courses> csl = new List<Courses>();
 
-            string email;
-
-            using (StreamReader reader = new StreamReader("wwwroot/Account.txt"))
-            {
-                email = reader.ReadToEnd().Split('&')[2];
-            }
-
+            string email = HttpContext.Request.Cookies["email"];
             using (CoursesContext courses = new CoursesContext())
             {
                 var db = courses.courses;
@@ -34,7 +28,7 @@ namespace Mentorship.Controllers
                         cs.Add(u);
                     }
                     if (u.PupilsEmails.Split(' ').Contains(email) &&
-                       ! u.PupilsEmails.Split(' ')[0].Equals(email))
+                       !u.PupilsEmails.Split(' ')[0].Equals(email))
                     {
                         csl.Add(u);
                     }

@@ -3,7 +3,6 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 <form method="post" asp-action="Tags" asp-controller="CoursesListIndex">
     <input type="text" class="all-text-box" value="@Model.Tags" name="temp">
     <input type="submit" class="greenButton" value="Set template">
@@ -26,8 +25,6 @@
                         <a class="underline-animation courses-link" href="https://localhost:44373/Course/CoursePage?lessonTitle=@u.LessonTitle">
                             @u.LessonTitle (@u.LessonTags)
                         </a>
-
-
                     </b>
 
                     <div class="white-box"> </div>

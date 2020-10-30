@@ -5,7 +5,7 @@
 
 <center>
     <b>
-        <a href="https://localhost:44373/Course/CoursePage?lessonTitle=@Model.lessonTitle" class="nav-link text-dark">
+        <a href="/Course/CoursePage?lessonTitle=@Model.lessonTitle" class="nav-link text-dark">
             < News
         </a>
     </b>
@@ -67,13 +67,21 @@
         <hr>
         @foreach (var f in Model.htFiles)
         {
-            int a = Int32.Parse(f.HometaskId.Split('|')[0]);
+            @if (Model.email.Equals(f.Sender) || u.Pupils.Split(' ')[0].Equals(Model.email))
+            {
+                <b>
+                    @f.Sender
+                    :
+                </b>
 
-            <a href="https://localhost:44373/Homework/DownloadHt?id=@a&filename=@f.HometaskId.Split('|')[1]">
-                @f.HometaskId.Split('|')[1]
-            </a>
-            <p />
+                int a = Int32.Parse(f.HometaskId.Split('|')[0]);
 
+                <a href="/Homework/DownloadHt?id=@a&filename=@f.HometaskId.Split('|')[1]">
+                    @f.HometaskId.Split('|')[1]
+                </a>
+                <p />
+                <hr>
+            }
         }
         <hr>
         <form method="post" enctype="multipart/form-data">

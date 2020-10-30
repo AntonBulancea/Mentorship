@@ -15,7 +15,6 @@ namespace Mentorship.Controllers
     {
         public IActionResult Index(string lessonTitle)
         {
-
             return View("Index", setModel(lessonTitle));
         }
         [HttpPost]
@@ -31,10 +30,11 @@ namespace Mentorship.Controllers
                     Theme = theme,
                     NewsLink = newsLink,
                     Pupils = emails,
-                    Hometask = lessonTitle
+                    Hometask = lessonTitle,
                 });
                 context.SaveChanges();
             }
+            string email;
 
             return View("Index", setModel(lessonTitle.Substring(3)));
         }
@@ -67,8 +67,15 @@ namespace Mentorship.Controllers
                         buffer = ms.ToArray();
                     }
 
+                    string email = HttpContext.Request.Cookies["email"];
                     string date = DateTime.Now.ToString("dddd, dd MMMM yyyy");
-                    HometaskFiles at = new HometaskFiles() { HometaskId = id + "|" + u.FileName, Date = date, File = buffer};
+                    HometaskFiles at = new HometaskFiles()
+                    {
+                        HometaskId = id + "|" + u.FileName,
+                        Date = date,
+                        File = buffer,
+                        Sender = email
+                    };
                     context.htFiles.Add(at);
                     context.SaveChanges();
                 }
@@ -76,9 +83,10 @@ namespace Mentorship.Controllers
 
             return View("Index", setModel(lessonTitle.Substring(3)));
         }
-        public IActionResult DownloadHt(string id,string filename) {
+        public IActionResult DownloadHt(string id, string filename)
+        {
             string lessonTitle = " ";
-    
+
             using (HometaskContext context = new HometaskContext())
             {
                 foreach (var u in context.ht)
@@ -106,10 +114,12 @@ namespace Mentorship.Controllers
                 }
             }
 
-            return View("Index",setModel(lessonTitle));
+            return View("Index", setModel(lessonTitle));
         }
         private HomeworkModel setModel(string lessonTitle)
         {
+            string email = HttpContext.Request.Cookies["email"];
+
             List<HometaskFiles> files = new List<HometaskFiles>();
             List<HomeworkTheme> homeworks = new List<HomeworkTheme>();
 
@@ -128,7 +138,13 @@ namespace Mentorship.Controllers
                 }
             }
 
-            HomeworkModel model = new HomeworkModel() { htFiles = files, htTheme = homeworks, lessonTitle = lessonTitle };
+            HomeworkModel model = new HomeworkModel()
+            {
+                htFiles = files,
+                htTheme = homeworks,
+                lessonTitle = lessonTitle,
+                email = email
+            };
             return model;
         }
     }

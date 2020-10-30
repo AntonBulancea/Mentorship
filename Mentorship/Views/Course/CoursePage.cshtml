@@ -4,81 +4,91 @@
     ViewData["Title"] = "CoursePage";
 }
 
-<center>
-
-    <b>
-        <a class="nav-link text-dark" href="
-               https://localhost:44373/Homework/Index?lessonTitle=@Model.lessonTitle">
-            Hometasks >
-        </a>
-    </b>
-
-    <p />
-
-    <h1>@Model.lessonTitle</h1>
-
-    <p />
-    @{
-        string path = Model.lessonTitle + ".png";
-
-        <img src="~/courses/@path" style="width:auto;height:300px;">
+<style>
+    .to-hometask {
+        transition: background-position 275ms ease
     }
-    <p />
 
-    <hr>
-    @Model.description
-    <hr>
-
-    @if (true)
-    {
-        <center>
-            <form method="post" enctype="multipart/form-data">
-                <label>News Title:</label>
-                <p />
-                <input type="text" class="all-text-box" name="NewsTitle" />
-                <p />
-                <label>News Text:</label>
-                <p />
-                <textarea name="NewsText"> </textarea>
-                <p />
-                <input type="file" multiple name="file" />
-                <p />
-                <input type="submit" asp-action="AddNews" asp-controller="Course" name="lessonTitle" class="button greenButton" value="Add news in @Model.lessonTitle">
-            </form>
-        </center>
-    }
-</center>
-
-
-<hr>
-@foreach (var u in Model.news)
-{
-    @if (u.LessonTitle.Equals(Model.lessonTitle))
-    {
-        <center>
-            <h1>
-                <b>@u.NewsTitle</b>
-            </h1>
-
-            <p />
-
-            <b>
-                @u.NewsText
-            </b>
-        </center>
-
-
-        @foreach (var f in Model.at)
-        {
-            if (f.NewsTitle.Equals(u.NewsTitle))
-            {
-                <a class="nav-link a-gray" href="
-               https://localhost:44373/Course/DownloadFile?LessonTitle=@f.LessonTitle&Filename=@f.FileName&NewsTitle=@f.NewsTitle">
-                    @f.FileName
-                </a>
-            }
+        .to-hometask:hover:after {
+            content: ' →';
         }
 
-        <hr>
+    .to-video {
+        transition: background-position 275ms ease
+    }
+
+        .to-video:hover:after {
+            content: '  ←';
+        }
+</style>
+
+<center>
+    <a class="to-hometask underline-animation courses-link"
+       href="/Homework/Index?lessonTitle=@Model.lessonTitle">Hometask </a>
+</center>
+
+<center>
+    <a class="to-video underline-animation courses-link"
+       href="/VideoCourses/CoursesVideo?lessonTitle=@Model.lessonTitle">Video courses </a>
+</center>
+
+@{
+    string path = Model.lessonTitle + ".png";
+
+    <center>
+        <div style="background-color:none; height:20px"></div>
+        <div>
+            <img src="~/icons/dots-three-horizontal.png"
+                 style="position:sticky;width:25px; left:67%; top:1000px" />
+
+            <img src="~/courses/@path" style="width:auto;height:300px;
+                 border-radius:10px; width:50%; height:auto">
+        </div>
+    </center>
+    <div style="background-color:none; height:50px"></div>
+    <form method="post" enctype="multipart/form-data">
+        <h4>News Title:</h4>
+        <p />
+        <input type="text" class="all-text-box" name="NewsTitle" />
+        <p />
+        <h4>News Text:</h4>
+        <p />
+        <textarea name="NewsText"> </textarea>
+        <p />
+        <input type="file" multiple name="file" />
+        <p />
+        <input type="submit" asp-action="AddNews" asp-controller="Course" name="lessonTitle" class="button greenButton" value="Add news in @Model.lessonTitle">
+    </form>
+
+    @foreach (var u in Model.news)
+    {
+        if (u.LessonTitle.Equals(Model.lessonTitle))
+        {
+            <div style="background-color:none; height:100px"></div>
+            <hr>
+
+            <center>
+                <h2>
+                    @u.LessonTitle
+                </h2>
+
+                <b>
+                    @u.NewsText
+                </b>
+            </center>
+            @foreach (var f in Model.at)
+            {
+                @if (f.LessonTitle.Equals(Model.lessonTitle))
+                {
+                    <a class="underline-animation courses-link"
+                       href="/Course/DownloadFile?LessonTitle=@f.LessonTitle&Filename=
+                   @f.FileName&NewsTitle=@f.NewsTitle">
+                        @f.FileName
+                    </a>
+                    <p />
+                }
+            }
+            <hr>
+        }
     }
 }

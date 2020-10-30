@@ -30,12 +30,7 @@ namespace Mentorship.Controllers
                 file.CopyTo(stream);
             }
 
-            string email;
-
-            using (StreamReader reader = new StreamReader("wwwroot/Account.txt"))
-            {
-                email = reader.ReadToEnd().Split('&')[2];
-            }
+            string email = HttpContext.Request.Cookies["email"];
 
             using (CoursesContext context = new CoursesContext())
             {
