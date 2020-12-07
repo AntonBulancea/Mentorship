@@ -138,7 +138,7 @@
         </div>
 
         <div class="group">
-            <input type="text" name="pass" required>
+            <input type="password" name="pass" required>
             <span class="highlight"></span>
             <span class="bar"></span>
             <label>Password</label>
@@ -149,6 +149,7 @@
                    type="submit" value="LOG IN" style="width:300px; border-radius:100px" />
         </div>
     </form>
+
     @if (Model != null)
     {
         @if (Model.Danger != null && !Model.Danger.Equals(""))
@@ -189,7 +190,7 @@
         </div>
 
         <div class="group">
-            <input type="text" name="pass" required>
+            <input type="password" name="pass" required>
             <span class="highlight"></span>
             <span class="bar"></span>
             <label>Password</label>

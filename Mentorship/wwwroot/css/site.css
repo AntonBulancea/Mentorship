@@ -28,6 +28,7 @@ a {
 -------------------------------------------------- */
 html {
     font-size: 14px;
+    overflow-x: hidden;
 }
 
 @media (min-width: 768px) {
@@ -149,7 +150,7 @@ textarea, select {
     }
 
 .greenButton {
-    background-color: darkgreen;
+    background-color: #4CAF50;
     border: none;
     color: white;
     padding: 16px 32px;
@@ -164,7 +165,7 @@ textarea, select {
 }
 
     .greenButton:hover {
-        background-color: #4CAF50;
+        background-color: #3e8e41;
         color: white;
     }
 
@@ -385,3 +386,4 @@ a {
     background-color: none;
     height: 30px;
 }
+

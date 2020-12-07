@@ -3,6 +3,29 @@
     ViewData["Title"] = "Index";
 }
 
+<style>
+    button {
+        position: relative;
+        transition: background 400ms;
+        border-radius: 0.5px;
+    }
+
+    span.ripple {
+        position: absolute;
+        border-radius: 50%;
+        transform: scale(0);
+        animation: ripple 600ms linear;
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+
+    @@keyframes ripple {
+        to {
+            transform: scale(4);
+            opacity: 0;
+        }
+    }
+</style>
+
 <center>
     <b>
         <a href="/Course/CoursePage?lessonTitle=@Model.lessonTitle" class="nav-link text-dark">
@@ -24,16 +47,24 @@
         <form method="post" asp-action="AddHometask" asp-controller="Homework">
             <label>Homework Theme:</label>
             <p />
-            <textarea name="theme"> </textarea>
-            <p />
-            <label>Add comment:</label>
-            <p />
-            <input class="all-text-box" type="text" name="newsLink" />
+            <textarea name="theme"> </textarea>          
             <p />
             <label>Pupils who have to do it:</label>
             <p />
             <input class="all-text-box" type="text" name="emails" value="All" />
             <p />
+
+            <label for="get_date">Date:</label>
+            <input type="date" name="get_date"
+                   value="@Model.date"
+                   min="@Model.date">
+            
+            <p />
+            <label for="get_date">Date:</label>
+            <input type="time" name="get_time"
+                   value="@Model.time">
+            <p />
+
             <input type="submit" name="lessonTitle" value="Add Hometask to @Model.lessonTitle" class="button greenButton" />
         </form>
     }
@@ -47,7 +78,7 @@
     {
         <center>
             <h1>
-                @u.Date
+                @u.Date.Split('*')[0]
             </h1>
             <b> @u.Theme </b>
         </center>
@@ -55,6 +86,7 @@
         {
             foreach (var f in u.Pupils.Split(' '))
             {
+                
                 <p />
                 @f
 
@@ -64,25 +96,41 @@
         {
             <b>Everyone have to do it</b>
         }
-        <hr>
-        @foreach (var f in Model.htFiles)
+
+        if (true)
         {
-            @if (Model.email.Equals(f.Sender) || u.Pupils.Split(' ')[0].Equals(Model.email))
+            List<string> pupils = new List<string>();
+
+            @foreach (var f in Model.htFiles)
             {
-                <b>
-                    @f.Sender
-                    :
-                </b>
+                @if (Model.email.Equals(f.Sender) || Model.isCreator)
+                {
+                    @if (!pupils.Contains(f.Sender))
+                    {
+                        if (f.HometaskId.Equals(u.Id))
+                        {
+                        <hr>
+                        <b>
+                            @f.Sender
+                            :
+                        </b>
 
-                int a = Int32.Parse(f.HometaskId.Split('|')[0]);
+                            pupils.Add(f.Sender);
+                        }
+                    }
+                    <p />
 
-                <a href="/Homework/DownloadHt?id=@a&filename=@f.HometaskId.Split('|')[1]">
-                    @f.HometaskId.Split('|')[1]
-                </a>
-                <p />
-                <hr>
+                    int a = Int32.Parse(f.HometaskId.Split('|')[0]);
+
+                    <a href="/Homework/DownloadHt?id=@a&filename=@f.HometaskId.Split('|')[1]">
+                        @f.HometaskId.Split('|')[1]
+                    </a>
+                    <p />
+
+                }
             }
         }
+
         <hr>
         <form method="post" enctype="multipart/form-data">
             <input type="file" multiple name="files">

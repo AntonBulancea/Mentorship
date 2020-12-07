@@ -1,0 +1,30 @@
+﻿@model Mentorship.Models.SecondaryFunctions.LateHtModel
+@{
+    ViewData["Title"] = "LateHometask";
+}
+
+<h1>Your hometask is too late :(</h1>
+
+<div>
+    <b>
+        You had to do it on:
+    </b>
+
+    <p />
+
+    <b>
+        @DateTime.Now.ToString("yyyy/MM/dd - HH:mm")
+    </b>
+</div>
+
+<div>
+    <b>
+        Now it's :
+    </b>
+
+    <p />
+
+    <b>
+        @Model.date
+    </b>
+</div>

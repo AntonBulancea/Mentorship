@@ -6,6 +6,7 @@
 <h1>Your Courses</h1>
 @{
     int i = 1;
+
     @foreach (var u in Model.courses)
     {
         string a = i.ToString() + ". ";
@@ -65,5 +66,34 @@
     if (i == 1)
     {
         <b>You haven't got in any couse yet :(</b>
+    }
+}
+<hr>
+<h1>Your hometasks</h1>
+@{
+    bool first = false;
+    @foreach (var u in Model.times)
+    {
+        if (first)
+        {
+            <hr/>
+        }
+
+        first = true;
+        foreach (var f in u.Value.Split('|'))
+        {
+
+            string message1 = "In " + u.Key + " till " + f;
+
+            <h6>
+                In
+                <b>
+                    <a href="/Homework/Index?lessonTitle=@u.Key" class="underline-animation courses-link">@u.Key</a>
+                </b>
+                till
+                @f
+                <p />
+            </h6>
+        }
     }
 }

@@ -24,14 +24,28 @@ namespace Mentorship.Controllers
                 {
                     if (u.LessonTitle.Equals(lessonTitle))
                     {
-                        if (!u.PupilsEmails.Split(' ').Contains(email))
+                        if (u.PupilsEmails.Split(' ')[u.PupilsEmails.Split(' ').Length - 1].Equals(":private"))
                         {
-                            return View("WrongEmail");
+                            if (!u.PupilsEmails.Split(' ').Contains(email))
+                            {
+                                return View("WrongEmail");
+                            }
+                        }
+                        else
+                        {
+                            if (!u.PupilsEmails.Split(' ').Contains(email))
+                            {
+                                return View("CoursePage", SetModel(lessonTitle, true));
+                            }
+                            else
+                            {
+                                return View("CoursePage", SetModel(lessonTitle, false));
+                            }
                         }
                     }
                 }
             }
-            return View("CoursePage", SetModel(lessonTitle));
+            return View("CoursePage", SetModel(lessonTitle, false));
         }
         [HttpPost]
         public IActionResult AddNews(IFormFileCollection file, string lessonTitle, string NewsText, string NewsTitle)
@@ -84,9 +98,80 @@ namespace Mentorship.Controllers
 
             return View("CoursePage", SetModel(LessonTitle));
         }
-        public CoursePageModel SetModel(string lessonTitle)
+        [HttpPost]
+        public IActionResult Subscribe(string lesson)
         {
+            string lessonTitle = lesson.Substring("Subscribe on ".Length);
+            Courses courses = new Courses();
+
+            using (CoursesContext context = new CoursesContext())
+            {
+                var db = context.courses;
+                foreach (var u in db)
+                {
+                    if (u.LessonTitle.Equals(lessonTitle))
+                    {
+                        courses = u;
+                    }
+                }
+            }
+            using (CoursesContext context = new CoursesContext())
+            {
+
+                context.courses.Attach(courses);
+                string emails = courses.PupilsEmails;
+                courses.PupilsEmails = emails.Insert(emails.Length - 2, " " +
+                    HttpContext.Request.Cookies["email"]);
+                context.SaveChanges();
+
+            }
+
+            return View("CoursePage", SetModel(lessonTitle));
+        }
+        [HttpPost]
+        public IActionResult UnSubscribe(string lesson)
+        {
+            string lessonTitle = lesson.Substring("UnSubscribe from ".Length);
+            Courses courses = new Courses();
+
+            using (CoursesContext context = new CoursesContext())
+            {
+                var db = context.courses;
+                foreach (var u in db)
+                {
+                    if (u.LessonTitle.Equals(lessonTitle))
+                    {
+                        courses = u;
+                    }
+                }
+            }
+            using (CoursesContext context = new CoursesContext())
+            {
+                context.courses.Attach(courses);
+                string emails = courses.PupilsEmails;
+                List<string> a = emails.Split(' ').ToList();
+                a.Remove(HttpContext.Request.Cookies["email"]);
+                string emailString = "";
+                foreach (var u in a) {
+                    emailString += u + " ";
+                }
+                courses.PupilsEmails = emailString;
+
+                context.SaveChanges();
+
+            }
+
+            return View("CoursePage", SetModel(lessonTitle));
+        }
+
+        public CoursePageModel SetModel(string lessonTitle, bool isSub = false)
+        {
+            string email = HttpContext.Request.Cookies["email"];
             string desc = "No description";
+            string emails = "";
+
+            bool isCreator = false;
+
             using (CoursesContext context = new CoursesContext())
             {
                 foreach (var u in context.courses)
@@ -94,6 +179,11 @@ namespace Mentorship.Controllers
                     if (u.LessonTitle.Equals(lessonTitle))
                     {
                         desc = u.LessonDescription;
+                        emails = u.PupilsEmails;
+                    }
+                    if (HttpContext.Request.Cookies["email"] == u.PupilsEmails.Split(' ')[0])
+                    {
+                        isCreator = true;
                     }
                 }
             }
@@ -125,8 +215,31 @@ namespace Mentorship.Controllers
                     at_list.Add(u);
                 }
             }
+            using (CoursesContext context = new CoursesContext())
+            {
+                var db = context.courses;
+                foreach (var u in db)
+                {
+                    if (u.LessonTitle.Equals(lessonTitle) && !isSub)
+                    {
+                        if (!u.PupilsEmails.Split(' ').Contains(email))
+                        {
+                            isSub = true;
+                        }
+                    }
+                }
+            }
 
-            CoursePageModel model = new CoursePageModel() { lessonTitle = lessonTitle, description = desc, news = news_list, at = at_list };
+            CoursePageModel model = new CoursePageModel()
+            {
+                isSub = isSub,
+                isCreator = isCreator,
+                lessonTitle = lessonTitle,
+                description = desc,
+                news = news_list,
+                at = at_list,
+                PercipantsEmails = emails
+            };
             return model;
         }
     }

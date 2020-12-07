@@ -11,6 +11,11 @@ namespace Mentorship.Models.SecondaryFunctions
     {
         public string lessonTitle { get; set; }
         public string description { get; set; }
+        public string PercipantsEmails { get; set; }
+
+        public bool isCreator { get; set; }
+        public bool isSub { get; set; }
+
         public List<News> news { get; set; }
         public List<AttachedFiles> at { get; set; }
     }

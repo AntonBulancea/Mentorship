@@ -11,8 +11,14 @@ namespace Mentorship.Models.SecondaryFunctions
     {
         public string lessonTitle { get; set; }
         public string email { get; set; }
+        public string date { get; set; }
+        public string time { get; set; }
+
 
         public List<HometaskFiles> htFiles { get; set; }
         public List<HomeworkTheme> htTheme { get; set; }
+        public List<Marks> marks { get; set; }
+
+        public bool isCreator { get; set; }
     }
 }

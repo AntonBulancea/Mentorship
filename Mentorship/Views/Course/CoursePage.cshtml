@@ -6,7 +6,7 @@
 
 <style>
     .to-hometask {
-        transition: background-position 275ms ease
+        transition: background-position 275ms ease;
     }
 
         .to-hometask:hover:after {
@@ -21,16 +21,58 @@
             content: '  ←';
         }
 </style>
+<style>
+    .subscribeButton {
+        opacity: 0.6;
+        transition-duration: 0.2s;
+        border-radius: 2px;
+        background-color: crimson;
+    }
+
+        .subscribeButton:hover {
+            opacity: 1;
+        }
+</style>
+
+<center>
+    @if (Model.isSub)
+    {
+        <h3>You are not subscribed</h3>
+
+        <form asp-action="Subscribe" asp-controller="Course" method="post">
+            <input type="submit" name="lesson" value="Subscribe on @Model.lessonTitle" class="button greenButton subscribeButton" />
+        </form>
+    }
+    else
+    {
+        <h3>You are subscribed</h3>
+
+        <form asp-action="UnSubscribe" asp-controller="Course" method="post">
+            <input type="submit" name="lesson" value="UnSubscribe from @Model.lessonTitle" class="button greenButton subscribeButton" />
+        </form>
+    }
+</center>
 
 <center>
     <a class="to-hometask underline-animation courses-link"
        href="/Homework/Index?lessonTitle=@Model.lessonTitle">Hometask </a>
 </center>
-
 <center>
     <a class="to-video underline-animation courses-link"
-       href="/VideoCourses/CoursesVideo?lessonTitle=@Model.lessonTitle">Video courses </a>
+       href="/VideoCourses/CoursesVideo?lessonTitle=@Model.lessonTitle"></a>
 </center>
+
+<hr>
+<center>
+    <h3>
+        Description
+    </h3>
+
+    <b>
+        @Model.description
+    </b>
+</center>
+<hr>
 
 @{
     string path = Model.lessonTitle + ".png";
@@ -38,57 +80,231 @@
     <center>
         <div style="background-color:none; height:20px"></div>
         <div>
-            <img src="~/icons/dots-three-horizontal.png"
-                 style="position:sticky;width:25px; left:67%; top:1000px" />
-
             <img src="~/courses/@path" style="width:auto;height:300px;
                  border-radius:10px; width:50%; height:auto">
         </div>
     </center>
     <div style="background-color:none; height:50px"></div>
-    <form method="post" enctype="multipart/form-data">
-        <h4>News Title:</h4>
-        <p />
-        <input type="text" class="all-text-box" name="NewsTitle" />
-        <p />
-        <h4>News Text:</h4>
-        <p />
-        <textarea name="NewsText"> </textarea>
-        <p />
-        <input type="file" multiple name="file" />
-        <p />
-        <input type="submit" asp-action="AddNews" asp-controller="Course" name="lessonTitle" class="button greenButton" value="Add news in @Model.lessonTitle">
-    </form>
 
-    @foreach (var u in Model.news)
+    @if (Model.isCreator)
     {
-        if (u.LessonTitle.Equals(Model.lessonTitle))
-        {
-            <div style="background-color:none; height:100px"></div>
-            <hr>
-
-            <center>
-                <h2>
-                    @u.LessonTitle
-                </h2>
-
-                <b>
-                    @u.NewsText
-                </b>
-            </center>
-            @foreach (var f in Model.at)
-            {
-                @if (f.LessonTitle.Equals(Model.lessonTitle))
+        <div id="Editer" style="visibility:visible">
+            <form method="post" enctype="multipart/form-data">
+                <h4>News Title:</h4>
+                <p />
+                <input type="text" class="all-text-box" name="NewsTitle" />
+                <p />
+                <h4>News Text:</h4>
+                <p />
+                <textarea name="NewsText"> </textarea>
+                <p />
+                <input type="file" multiple name="file" />
+                <p />
+                <input type="submit" asp-action="AddNews" asp-controller="Course" name="lessonTitle" class="button greenButton" value="Add news in @Model.lessonTitle">
+            </form>
+        </div>
+        <div id="Index" style="visibility: hidden; position: relative; top: -350px; height: 5px">
+            <h1> Index </h1>
+            @{
+                int i = 1;
+                @foreach (var u in Model.news)
                 {
-                    <a class="underline-animation courses-link"
-                       href="/Course/DownloadFile?LessonTitle=@f.LessonTitle&Filename=
-                   @f.FileName&NewsTitle=@f.NewsTitle">
-                        @f.FileName
-                    </a>
-                    <p />
+                    if (u.LessonTitle.Equals(Model.lessonTitle))
+                    {
+                        <p />
+                        <a href="#@u.NewsTitle" class="nav-link text-dark">
+                            @i
+                            .
+                            @u.NewsTitle
+                        </a>
+
+
+                        i++;
+                    }
                 }
             }
+        </div>
+        <div id="Desc" style="visibility: hidden; position: relative; top: -350px; height: 5px">
+            <h1>About this course</h1>
+            <form method="post" asp-action="ChangeDesctiption" asp-controller="CourseEditer">
+                <h4>Write here your new description:</h4>
+                <textarea name="new_description"> @Model.description </textarea>
+                <p />
+                <input class="button greenButton" type="submit" name="ls"
+                       value="Change description for @Model.lessonTitle" />
+            </form>
+        </div>
+        <div id="Perc" style="visibility: hidden; position: relative; top: -350px; height: 5px">
+            <h4>All Percipants:</h4>
+            @foreach (var u in Model.PercipantsEmails.Split(' '))
+            {
+                if (!u.Equals(":private") && !u.Equals(":public"))
+                {
+                    <p />
+
+                    <b>
+                        @u
+                    </b>
+                }
+            }
+        </div>
+    }
+    @if (!Model.isCreator)
+    {
+        <div id="Editer" style="visibility:hidden">
+            <form method="post" enctype="multipart/form-data">
+                <h4>News Title:</h4>
+                <p />
+                <input type="text" class="all-text-box" name="NewsTitle" />
+                <p />
+                <h4>News Text:</h4>
+                <p />
+                <textarea name="NewsText"> </textarea>
+                <p />
+                <input type="file" multiple name="file" />
+                <p />
+                <input type="submit" asp-action="AddNews" asp-controller="Course" name="lessonTitle" class="button greenButton" value="Add news in @Model.lessonTitle">
+            </form>
+        </div>
+        <div id="Index" style="visibility: visible; position: relative; top: -350px; height: 5px">
+            <h1> Index </h1>
+            @{
+                int i = 1;
+                @foreach (var u in Model.news)
+                {
+                    if (u.LessonTitle.Equals(Model.lessonTitle))
+                    {
+                        <p />
+                        <a href="#@u.NewsTitle" class="nav-link text-dark">
+                            @i
+                            .
+                            @u.NewsTitle
+                        </a>
+
+
+                        i++;
+                    }
+                }
+            }
+        </div>
+        <div id="Desc" style="visibility: hidden; position: relative; top: -350px; height: 5px">
+            <h1>About this course</h1>
+            <form method="post" asp-action="ChangeDesctiption" asp-controller="CourseEditer">
+                <h4>Write here your new description:</h4>
+                <textarea name="new_description"> @Model.description </textarea>
+                <p />
+                <input class="button greenButton" type="submit" name="ls"
+                       value="Change description for @Model.lessonTitle" />
+            </form>
+        </div>
+        <div id="Perc" style="visibility: hidden; position: relative; top: -350px; height: 5px">
+            <h1>Hello</h1>
+        </div>
+    }
+    foreach (var u in Model.news)
+    {
+
+        @if (u.LessonTitle.Equals(Model.lessonTitle))
+        {
+            <div id="@u.NewsTitle">
+                <div style="background-color:none; height:100px"></div>
+                <hr>
+
+                <center>
+                    <h2>
+                        @u.NewsTitle
+                    </h2>
+
+                    <b>
+                        @u.NewsText
+                    </b>
+                </center>
+                @foreach (var f in Model.at)
+                {
+                    @if (f.LessonTitle.Equals(Model.lessonTitle))
+                    {
+                        <a class="underline-animation courses-link"
+                           href="/Course/DownloadFile?LessonTitle=@f.LessonTitle&Filename=
+                            @f.FileName&NewsTitle=@f.NewsTitle">
+                            @f.FileName
+                        </a>
+                        <p />
+                    }
+                }
+            </div>
             <hr>
         }
     }
 }
+
+<style>
+    .mySidenav a {
+        position: absolute;
+        left: -80px;
+        transition: 0.3s;
+        padding: 15px;
+        width: 100px;
+        text-decoration: none;
+        font-size: 20px;
+        color: white;
+        border-radius: 0 5px 5px 0;
+    }
+
+        .mySidenav a:hover {
+            left: 0;
+        }
+
+    .index {
+        top: 20px;
+        background-color: #4CAF50;
+    }
+
+    .editer {
+        top: 80px;
+        background-color: #2196F3;
+    }
+
+    .desc {
+        top: 140px;
+        background-color: #f44336;
+    }
+
+    .percipants {
+        top: 200px;
+        background-color: #555
+    }
+</style>
+
+<script style="visibility:visible">
+    function editer() {
+        document.getElementById('Index').style = 'visibility:hidden;position:relative; top:-350px;height:5px';
+        document.getElementById('Editer').style = 'visibility:visible;';
+        document.getElementById('Desc').style = 'visibility:hidden; position:relative; top:-350px; height:5px';
+        document.getElementById('Perc').style = 'visibility:hidden; position:relative; top:-350px; height:5px';
+    }
+    function index() {
+        document.getElementById('Editer').style = 'visibility:hidden;';
+        document.getElementById('Index').style = 'visibility:visible; position:relative; top:-350px; height:5px';
+        document.getElementById('Desc').style = 'visibility:hidden; position:relative; top:-350px; height:5px';
+        document.getElementById('Perc').style = 'visibility:hidden; position:relative; top:-350px; height:5px';
+    }
+    function desc() {
+        document.getElementById('Editer').style = 'visibility:hidden;';
+        document.getElementById('Index').style = 'visibility:hidden; position:relative; top:-350px; height:5px';
+        document.getElementById('Desc').style = 'visibility:visible; position:relative; top:-350px; height:5px';
+        document.getElementById('Perc').style = 'visibility:hidden; position:relative; top:-350px; height:5px';
+    }
+    function perc() {
+        document.getElementById('Editer').style = 'visibility:hidden;';
+        document.getElementById('Index').style = 'visibility:hidden; position:relative; top:-350px; height:5px';
+        document.getElementById('Desc').style = 'visibility:hidden; position:relative; top:-350px; height:5px';
+        document.getElementById('Perc').style = 'visibility:visible; position:relative; top:-350px; height:5px';
+    }
+
+</script>
+<div id="mySidenav" class="mySidenav" style="top:10px">
+    <a href="#Index" class="index" onclick="index()" style="top:590px" id="index">Index</a>
+    <a href="#Editer" class="editer" onclick="editer()" style="top:660px" id="blog">Editer</a>
+    <a href="#Desc" class="desc" onclick="desc()" style="top:730px" id="desc">Settings</a>
+    <a href="#Perc" class="percipants" onclick="perc()" style="top:800px" id="percipants">Percipants</a>
+</div>

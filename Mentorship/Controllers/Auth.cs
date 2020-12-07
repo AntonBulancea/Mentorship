@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Mentorship.Models.Context;
 using Mentorship.Models.MainFunctions;
 using Mentorship.Models.SecondaryFunctions;
 using Mentorship.Models.Tables;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
 
 namespace Mentorship.Controllers
 {
@@ -31,7 +29,7 @@ namespace Mentorship.Controllers
                     if (u.Email.Equals(email) && u.Password.Equals(pass))
                     {
                         Accounts account = new Accounts() { Name = u.Name, Surname = u.Surname, Email = email, Pass = pass };
-                      
+
                         Response.Cookies.Append("name", u.Name);
                         Response.Cookies.Append("surname", u.Surname);
                         Response.Cookies.Append("email", email);
@@ -87,19 +85,36 @@ namespace Mentorship.Controllers
         }
         public IActionResult myAccountPage()
         {
-            using (StreamReader reader = new StreamReader("wwwroot/Account.txt"))
+            string name = HttpContext.Request.Cookies["name"];
+            string surname = HttpContext.Request.Cookies["surname"];
+            string email = HttpContext.Request.Cookies["email"];
+            string pass = HttpContext.Request.Cookies["pass"];
+
+            Accounts acc = new Accounts() { Name = name, Surname = surname, Email = email, Pass = pass };
+            return View("myAccount", acc);
+
+        }
+
+        [HttpPost]
+        public IActionResult setImg(IFormFile file)
+        {
+            string[] path = HttpContext.Request.Cookies["email"].Split('@');
+            string email = path[0] + "-" + path[1] + ".png";
+
+            using (FileStream stream = new FileStream("wwwroot/user/" + email, FileMode.OpenOrCreate))
             {
-                string text = reader.ReadToEnd();
-
-                string name = text.Split('&')[0];
-                string surname = text.Split('&')[1];
-                string email = text.Split('&')[2];
-                string pass = text.Split('&')[3];
-
-                Accounts acc = new Accounts() { Name = name, Surname = surname, Email = email, Pass = pass };
-
-                return View("myAccount", acc);
+                file.CopyTo(stream);
             }
+
+            Accounts account = new Accounts()
+            {
+                Name = HttpContext.Request.Cookies["name"],
+                Surname = HttpContext.Request.Cookies["surname"],
+                Email = HttpContext.Request.Cookies["email"],
+                Pass = HttpContext.Request.Cookies["pass"]
+            };
+
+            return View("myAccount", account);
         }
     }
 }

@@ -3,50 +3,31 @@
     ViewData["Title"] = "myAccount";
 }
 
-<h1>Hello,@Model.Name @Model.Surname</h1>
-<b>@Model.Email</b>
+<div style="position:absolute; left:15%">
+    <h1>Hello,@Model.Name @Model.Surname</h1>
+    <b>@Model.Email</b>
+</div>
 
-<style>
-    .mySidenav-acc a {
-        position: absolute;
-        left: -80px;
-        top: 10%;
-        transition: 0.3s;
-        padding: 15px;
-        width: 100px;
-        text-decoration: none;
-        font-size: 20px;
-        color: white;
-        border-radius: 0 5px 5px 0;
-    }
+<p />
 
-        .mySidenav-acc a:hover {
-            left: 0;
-        }
+@{ string path = Model.Email.Split('@')[0] + "-" + Model.Email.Split('@')[1] + ".png"; }
 
-    #about {
-        top: 20px;
-        background-color: #4CAF50;
-    }
+<img src="~/user/@path" style="height: 90px; width:90px; border-radius:50%; position:relative; left:-7%; top:1%;">
+<hr/>
 
-    #blog {
-        top: 80px;
-        background-color: #2196F3;
-    }
-
-    #projects {
-        top: 140px;
-        background-color: #f44336;
-    }
-
-    #contact {
-        top: 200px;
-        background-color: #555
-    }
-</style>
-    <div class="mySidenav-acc">
-        <a href="#" style="top:190px" id="acc">Account</a>
-        <a href="#" style="top:280px" id="lear">Learn</a>
-        <a href="#" style="top:370px" id="teac">Teach</a>
-        <a href="#" style="top:460px" id="set">Settings</a>
-    </div>
+<h3>Set your photo</h3>
+<form enctype="multipart/form-data" asp-action="setImg" asp-controller="Auth" method="post">
+    <input type="file" name="file"/>
+    <p/>
+    <div style="background-color:none; height:20px"/>
+    <input type="submit" value="Set your photo" class="greenButton"/>
+</form>
+<hr>
+<h3>Change your password:</h3>
+<form asp-action="changePass" asp-controller="Auth" method="post">
+    <input class="all-text-box" type="password" name="last_pass">
+    <p />
+    <input class="all-text-box" type="password" name="new_pass">
+    <p/>
+    <input type="submit" value="Set your new password" class="greenButton" />
+</form>

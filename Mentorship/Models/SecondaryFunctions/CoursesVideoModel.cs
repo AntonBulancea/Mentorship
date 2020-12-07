@@ -1,4 +1,5 @@
-﻿using Mentorship.Models.Tables;
+﻿using Mentorship.Models.Context;
+using Mentorship.Models.Tables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace Mentorship.Models.SecondaryFunctions
     {
         public List<Sections> sections { get; set; }
         public List<SectionLesson> lessons { get; set; }
+        public bool isCreator { get; set; }
+
         public string lessonTitle { get; set; }
     }
 }

@@ -10,5 +10,7 @@ namespace Mentorship.Models.SecondaryFunctions
     {
         public List<Courses> courses = new List<Courses>();
         public List<Courses> Learn_courses = new List<Courses>();
+
+        public Dictionary<string, string> times = new Dictionary<string, string>();
     }
 }

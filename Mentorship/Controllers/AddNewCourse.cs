@@ -22,7 +22,8 @@ namespace Mentorship.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult LessonAddedAsync(IFormFile file, string title, string desc, string tags, string emails)
+        public IActionResult LessonAddedAsync(IFormFile file, string title, string desc,
+                                              string tags, string emails, string type)
         {
             string path = "wwwroot/courses/" + title + ".png";
             using (FileStream stream = new FileStream(path, FileMode.OpenOrCreate))
@@ -40,7 +41,7 @@ namespace Mentorship.Controllers
                     LessonDescription = desc,
                     LessonPhoto = null,
                     LessonTags = tags,
-                    PupilsEmails = email + " " + emails
+                    PupilsEmails = email + " " + emails + " :" + type
                 };
                 context.courses.Add(course);
                 context.SaveChanges();

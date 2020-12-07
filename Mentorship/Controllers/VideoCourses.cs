@@ -35,12 +35,22 @@ namespace Mentorship.Controllers
 
             using (SectionLessonContext context = new SectionLessonContext())
             {
+                foreach(var u in context.sLessons) {
+                    if (u.lessonTitle.Equals(lessonTitle) && u.sectionTitle.Equals(section)) {
+                        context.sLessons.Remove(u);
+                    }
+                }
+                context.SaveChanges();
+            }
+
+            using (SectionLessonContext context = new SectionLessonContext())
+            {
                 SectionLesson lesson = new SectionLesson()
                 {
                     lessonTitle = lessonTitle,
                     sectionTitle = section,
                     description = desc,
-                    videoLink = video.Split('/')[3].Substring(8)
+                    videoLink = video.Split('/')[3].Substring("watch?v=".Length)
                 };
                 context.sLessons.Add(lesson);
                 context.SaveChanges();
@@ -51,6 +61,10 @@ namespace Mentorship.Controllers
         {
             List<Sections> sections = new List<Sections>();
             List<SectionLesson> lessons = new List<SectionLesson>();
+            List<Courses> courses = new List<Courses>();
+
+            string email = HttpContext.Request.Cookies["email"];
+            bool creator = false;
 
             using (SectionsContext context = new SectionsContext())
             {
@@ -63,7 +77,6 @@ namespace Mentorship.Controllers
                     }
                 }
             }
-
             using (SectionLessonContext context = new SectionLessonContext())
             {
                 var db = context.sLessons;
@@ -75,12 +88,24 @@ namespace Mentorship.Controllers
                     }
                 }
             }
+            using (CoursesContext context = new CoursesContext())
+            {
+                var db = context.courses;
+                foreach (var u in db)
+                {
+                    if (u.LessonTitle.Equals(lessonTitle) && u.PupilsEmails.Split(' ')[0].Equals(email))
+                    {
+                        creator = true;
+                    }
+                }
+            }
 
             CoursesVideoModel model = new CoursesVideoModel()
             {
                 lessonTitle = lessonTitle,
                 sections = sections,
-                lessons = lessons
+                lessons = lessons,
+                isCreator = creator
             };
             return model;
         }

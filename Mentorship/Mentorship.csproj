@@ -21,7 +21,7 @@
     <Folder Include="Views\Chats\" />
     <Folder Include="Views\Notifications\" />
     <Folder Include="wwwroot\courses\" />
-    <Folder Include="wwwroot\download\" />
+    <Folder Include="wwwroot\user\" />
   </ItemGroup>
 
 </Project>
